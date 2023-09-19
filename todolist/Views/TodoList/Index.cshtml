@@ -1,0 +1,64 @@
+﻿@model List<todolist.Models.TodoList>
+
+<html>
+    <body>
+        <h1>Todo List</h1>        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var td in Model)
+            {
+                <tr>
+                    @if(td.IsCompleted == false)
+                    {
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                               
+                            </div>
+                        </td>
+                    }
+                    else
+                    {
+
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                                
+                            </div>
+                        </td>
+                    }
+                    <td>@td.Id</td>
+                    <td>@td.Title</td>
+                    <td>@td.Description</td>
+                    <td>
+                        <button class="btn btn-secondary">
+                            <a type="submit" asp-action="EditTodo" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">Edit</a>
+
+                </button>
+                        <button class="btn btn-danger"><a type="submit" asp-action="DeleteTodo" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">Delete</a>
+                            </button>
+
+                        
+                        <button class="btn btn-primary">
+                            <a type="submit" asp-action="status" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">Done</a>
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        
+           
+        </table>
+     
+    </body>
+   
+</html>

@@ -1,0 +1,17 @@
+﻿@model todolist.Models.AddTodoList
+
+
+
+
+<html>
+<body>
+    <h1>Todo List</h1>
+    <form method="post" action="AddTodo">
+        <label>Title</label>
+        <input type="text" asp-for="Title" /><br /><br />
+        <label>Description</label>
+        <input type="text" asp-for="Description" /><br /><br />
+        <input type="submit" value="Save" />
+    </form>
+</body>
+</html>

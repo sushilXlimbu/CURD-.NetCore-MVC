@@ -1,0 +1,17 @@
+﻿@model todolist.Models.EditTodoList
+
+<html>
+<body>
+    <h1>Edit Todo List</h1>
+    <form method="post" action="EditTodo">
+        <label>Id</label>
+        <input type="text" asp-for="Id" readonly /><br /><br />
+        <label>Title</label>
+        <input type="text" asp-for="Title" /><br /><br />
+        <label>Description</label>
+        <input type="text" asp-for="Description" /><br /><br />
+        <input type="checkbox" asp-for="IsCompleted" /><br /><br />
+        <input type="submit" value="Save" />
+    </form>
+</body>
+</html>
