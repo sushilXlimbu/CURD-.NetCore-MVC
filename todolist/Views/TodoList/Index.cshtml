@@ -1,64 +1,100 @@
 ﻿@model List<todolist.Models.TodoList>
 
 <html>
-    <body>
-        <h1>Todo List</h1>        
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+<body>
+    <div>
+        <h1>Todo List</h1>
+
+        <form method="post" asp-action="Index" asp-controller="TodoList">
+            <label for="filterDropdown">Filter:</label>
+            <select name="selection" id="selection">
+                <option value="all" selected='@(ViewBag.SelectedValue == "all" ? "selected" : "false")'>All</option>
+                <option value="selected" selected='@(ViewBag.SelectedValue == "selected" ? "selected" : "false")'>Selected</option>
+                <option value="unselected" selected='@(ViewBag.SelectedValue == "unselected" ? "selected" : "false" )'>Unselected</option>
+            </select>
+
+            <input type="submit" value="submit" />
+        </form>
+
+        @*<div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" asp-action="Index" asp-controller="TodoList">All</a>
+        <a class="dropdown-item" asp-action="Completedtodo" asp-controller="TodoList" >Complected</a>
+        <a class="dropdown-item" asp-action="NotCompletedtodo" asp-controller="TodoList" >Not Completed</a>
+        </div>
+        </div>*@
+
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var td in Model)
             {
+
                 <tr>
-                    @if(td.IsCompleted == false)
+                    @if (td.IsCompleted == false)
                     {
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
-                               
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="document.getElementById('@td.Id').click()">
                             </div>
                         </td>
                     }
                     else
                     {
-
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked disabled>
-                                
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked onclick="document.getElementById('@td.Id').click()">
                             </div>
                         </td>
                     }
-                    <td>@td.Id</td>
+                    <td>@td.Date</td>
                     <td>@td.Title</td>
                     <td>@td.Description</td>
                     <td>
-                        <button class="btn btn-secondary">
-                            <a type="submit" asp-action="EditTodo" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">Edit</a>
 
-                </button>
-                        <button class="btn btn-danger"><a type="submit" asp-action="DeleteTodo" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">Delete</a>
-                            </button>
+                        <a type="submit" asp-action="EditTodo" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">
+                            <button class="btn btn-secondary">Edit</button>
+                        </a>
 
-                        
-                        <button class="btn btn-primary">
-                            <a type="submit" asp-action="status" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">Done</a>
-                        </button>
+
+                        <a type="submit" asp-action="DeleteTodo" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;">
+                            <button class="btn btn-danger">Delete</button>
+                        </a>
+
+                        @if (td.IsCompleted == false)
+                        {
+                            <a asp-action="status" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;" id="@td.Id">
+                                <button class="btn btn-success">Check</button>
+                            </a>
+                        }
+                        else
+                        {
+                            <a type="submit" asp-action="Status" asp-controller="TodoList" asp-route-id="@td.Id" style="color: black;" id="@td.Id">
+                                <button class="btn btn-primary">UnCheck</button>
+                            </a>
+                        }
                     </td>
                 </tr>
             }
-            </tbody>
-        
-           
-        </table>
-     
-    </body>
-   
+        </tbody>
+
+
+    </table>
+
+</body>
+
 </html>

@@ -6,8 +6,10 @@
     <form method="post" action="EditTodo">
         <label>Id</label>
         <input type="text" asp-for="Id" readonly /><br /><br />
+        <span asp-validation-for="Title" class="text-danger"></span><br />
         <label>Title</label>
         <input type="text" asp-for="Title" /><br /><br />
+        <span asp-validation-for="Description" class="text-danger"></span><br />
         <label>Description</label>
         <input type="text" asp-for="Description" /><br /><br />
         <input type="checkbox" asp-for="IsCompleted" /><br /><br />

@@ -15,9 +15,41 @@ namespace todolist.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<TodoList> TodoList = await _dbContext.Todolists.ToListAsync();
+            List<TodoList> TodoList = await _dbContext.Todolists.OrderByDescending(e => e.Date).ToListAsync();
+
             return View(TodoList);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(ViewTodoList model)
+        {
+            ViewBag.selectedValue = model.selection;
+            if (model.selection == "all")
+            {
+                List<TodoList> TodoList = await _dbContext.Todolists.OrderByDescending(e => e.Date).ToListAsync();
+                return View(TodoList);
+            }
+            else if (model.selection == "selected")
+            {
+                List<TodoList> TodoList = await _dbContext.Todolists.OrderByDescending(e => e.Date).Where(i => i.IsCompleted == true).ToListAsync();
+                return View(TodoList);
+
+            }
+            else
+            {
+                List<TodoList> TodoList = await _dbContext.Todolists.OrderByDescending(e => e.Date).Where(i => i.IsCompleted == false).ToListAsync();
+                return View(TodoList);
+            }
+        }
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> Completedtodo()
+        //{
+        //    List<TodoList> Completedlist = await _dbContext.Todolists.OrderByDescending(e => e.Date).Where(i => i.IsCompleted == true).ToListAsync();
+        //    return View("Index", Completedlist);
+        //}
+
         [HttpGet]
         public IActionResult AddTodo()
         {
@@ -31,6 +63,7 @@ namespace todolist.Controllers
                 TodoList todolist = new TodoList()
                 {
                     Id = Guid.NewGuid(),
+                    Date = DateTime.Now,
                     Title = list.Title,
                     Description = list.Description,
 
@@ -42,7 +75,7 @@ namespace todolist.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                return View(list);
             }
 
 
@@ -71,7 +104,7 @@ namespace todolist.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTodo(EditTodoList todo)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var todolist = await _dbContext.Todolists.FindAsync(todo.Id);
                 if (todolist != null)
@@ -84,21 +117,25 @@ namespace todolist.Controllers
 
                     return RedirectToAction("Index");
                 }
-            }          
-            return RedirectToAction("Index");
+            }
+            return View(todo);
 
         }
         [HttpGet]
         public async Task<IActionResult> DeleteTodo(Guid Id)
         {
             TodoList? selectedtodo = await _dbContext.Todolists.FirstOrDefaultAsync(x => x.Id == Id);
-            _dbContext.Todolists.Remove(selectedtodo);
-            await _dbContext.SaveChangesAsync();
+            if (selectedtodo != null)
+            {
+                _dbContext.Todolists.Remove(selectedtodo);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
 
         }
         [HttpGet]
-        public IActionResult status(Guid Id)
+        public IActionResult Status(Guid Id)
         {
             var selectedtodo = _dbContext.Todolists.FirstOrDefault(x => x.Id == Id);
 

@@ -2,14 +2,14 @@
 
 namespace todolist.Models
 {
-    public class AddTodoList
+    public class ViewTodoList
     {
+        [Key]
+        public Guid Id { get; set; }
         public DateTime Date { get; set; }
-        [Required]
         public string Title { get; set; }
-        [Required ]
         public string Description { get; set; }
-        
-
+        public bool IsCompleted { get; set; }
+        public string selection { get; set; }
     }
 }

@@ -7,8 +7,10 @@
 <body>
     <h1>Todo List</h1>
     <form method="post" action="AddTodo">
+        <span asp-validation-for="Title" class="text-danger"></span><br />
         <label>Title</label>
         <input type="text" asp-for="Title" /><br /><br />
+        <span asp-validation-for="Description" class="text-danger"></span><br />
         <label>Description</label>
         <input type="text" asp-for="Description" /><br /><br />
         <input type="submit" value="Save" />
